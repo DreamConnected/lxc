@@ -148,6 +148,7 @@ want_state_dirs = get_option('install-state-dirs')
 want_thread_safety = get_option('thread-safety')
 want_memfd_rexec = get_option('memfd-rexec')
 want_dbus = get_option('dbus')
+want_acl = get_option('acl')
 
 # Set sysconfdir
 fs = import('fs')
@@ -456,6 +457,16 @@ pam = cc.find_library('pam', has_headers: 'security/pam_modules.h', required: wa
 srcconf.set10('HAVE_PAM', pam.found())
 pkgconfig_libs += pam
 
+## ACL.
+if want_acl
+    libacl = dependency('libacl', required: false)
+    srcconf.set10('HAVE_ACL', libacl.found())
+    pkgconfig_libs += libacl
+    liblxc_dependencies += libacl
+else
+    srcconf.set10('HAVE_ACL', false)
+endif
+
 ## Others.
 have = cc.has_function('fmemopen', prefix: '#include <stdio.h>', args: '-D_GNU_SOURCE')
 srcconf.set10('HAVE_FMEMOPEN', have)
@@ -581,6 +592,7 @@ foreach ident: [
     ['strlcat',           '''#include <string.h>'''],
     ['strlcpy',           '''#include <string.h>'''],
     ['unshare',           '''#include <sched.h>'''],
+    ['getxattr',          '''#include <sys/xattr.h>'''],
 ]
 
     have = cc.has_function(ident[0], prefix: ident[1], args: '-D_GNU_SOURCE')
@@ -634,6 +646,7 @@ foreach tuple: [
     ['strlcat'],
     ['strlcpy'],
     ['unshare'],
+    ['getxattr'],
 ]
 
     if tuple.length() >= 2
@@ -819,6 +832,7 @@ foreach tuple: [
     ['pam'],
     ['openssl'],
     ['liburing'],
+    ['acl'],
 ]
 
     if tuple.length() >= 2

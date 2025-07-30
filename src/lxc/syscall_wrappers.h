@@ -165,6 +165,13 @@ static inline int personality(unsigned long persona)
 }
 #endif
 
+#if !HAVE_GETXATTR
+static inline ssize_t getxattr(const char* path, const char* name, void* value, size_t size)
+{
+	return syscall(__NR_getxattr, path, name, value, size);
+}
+#endif
+
 /* arg1 of prctl() */
 #ifndef PR_SCHED_CORE
 #define PR_SCHED_CORE 62

@@ -751,4 +751,50 @@
 	#endif
 #endif
 
+#ifndef __NR_getxattr
+    #if defined(__alpha__)
+        #define __NR_getxattr 107
+    #elif defined(__m68k__)
+        #define __NR_getxattr 247
+    #elif defined(__i386__)
+        #define __NR_getxattr 232
+    #elif defined(__x86_64__)
+        #define __NR_getxattr 191
+    #elif defined(__arm__)
+        #define __NR_getxattr 229
+    #elif defined(__aarch64__)
+        #define __NR_getxattr 8
+    #elif defined(__s390__)
+        #define __NR_getxattr 318
+    #elif defined(__s390x__)
+        #define __NR_getxattr 318
+    #elif defined(__powerpc__)
+        #define __NR_getxattr 209
+    #elif defined(__powerpc64__)
+        #define __NR_getxattr 209
+    #elif defined(__riscv) && __riscv_xlen == 64
+        #define __NR_getxattr 214
+    #elif defined(__riscv) && __riscv_xlen == 32
+        #define __NR_getxattr 242
+    #elif defined(__sparc__)
+        #define __NR_getxattr 252
+    #elif defined(__ia64__)
+        #define __NR_getxattr 107
+    #elif defined(_MIPS_SIM)
+        #if _MIPS_SIM == _MIPS_SIM_ABI32    /* o32 */
+            #define __NR_getxattr (288 + 4000)
+		#endif
+        #if _MIPS_SIM == _MIPS_SIM_NABI32	/* n32 */
+            #define __NR_getxattr (288 + 6000)
+		#endif
+        #if _MIPS_SIM == _MIPS_SIM_ABI64	/* n64 */
+            #define __NR_getxattr (288 + 5000)
+        #endif
+    #elif defined(__loongarch64)
+        #define __NR_getxattr 214
+    #else
+        #warning "__NR_getxattr not defined for your architecture"
+    #endif
+#endif
+
 #endif /* __LXC_SYSCALL_NUMBERS_H */
