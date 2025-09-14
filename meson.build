@@ -151,6 +151,7 @@ want_thread_safety = get_option('thread-safety')
 want_memfd_rexec = get_option('memfd-rexec')
 want_dbus = get_option('dbus')
 want_android_log = get_option('android-log')
+want_landlock_monitor = get_option('landlock-monitor')
 
 # Set sysconfdir
 fs = import('fs')
@@ -307,6 +308,12 @@ if want_dbus
     srcconf.set10('HAVE_DBUS', libdbus.found())
 else
     srcconf.set10('HAVE_DBUS', false)
+endif
+
+if want_landlock_monitor
+    srcconf.set10('HAVE_LANDLOCK_MONITOR', true)
+else
+    srcconf.set10('HAVE_LANDLOCK_MONITOR', false)
 endif
 
 ## Time EPOCH.
