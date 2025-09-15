@@ -44,3 +44,9 @@ if srcconf.get('HAVE_HASMNTOPT') == 0
         'hasmntopt.c',
         'hasmntopt.h')
 endif
+
+if srcconf.get('HAVE_PTHREAD_SETCANCELSTATE') == 0
+    include_sources += files(
+        'pthread_setcancelstate.c',
+        'pthread_ext.h')
+endif

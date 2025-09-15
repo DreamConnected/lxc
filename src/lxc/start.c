@@ -68,6 +68,10 @@
 #include "strlcpy.h"
 #endif
 
+#if IS_BIONIC
+#include <pthread_ext.h>
+#endif
+
 #if HAVE_LANDLOCK_MONITOR
 #ifndef landlock_create_ruleset
 static inline int
