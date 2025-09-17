@@ -68,6 +68,10 @@
 #include "strlcpy.h"
 #endif
 
+#if IS_BIONIC
+#include <pthread_ext.h>
+#endif
+
 #if HAVE_LANDLOCK_MONITOR
 #ifndef landlock_create_ruleset
 static inline int
@@ -729,10 +733,13 @@ int lxc_handler_mainloop(struct lxc_async_descr *descr, struct lxc_handler *hand
 	pthread_t thread;
 
 	/* Skip protection if a seccomp proxy is setup. */
+#if HAVE_DECL_SECCOMP_NOTIFY_FD
 	if (!handler || !handler->conf || handler->conf->seccomp.notifier.proxy_fd > 0) {
 		/* Landlock not supported when seccomp notify is in use. */
 		SYSERROR("Skipping Landlock due to seccomp notify");
-
+#else
+	if (!handler || !handler->conf) {
+#endif
 		/* We don't need to use thread then */
 		return lxc_mainloop(descr, -1);
 	}

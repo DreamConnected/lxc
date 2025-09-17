@@ -497,8 +497,7 @@ if have
     endif
 endif
 
-## NDK doesn't implement thread_setcancelstate functions, and is only used as a placeholder here
-have = cc.has_function('pthread_kill', prefix: '#include <pthread.h>')
+have = cc.has_function('pthread_setcancelstate', prefix: '#include <pthread.h>')
 srcconf.set10('HAVE_PTHREAD_SETCANCELSTATE', have)
 
 have = cc.has_function('rand_r')

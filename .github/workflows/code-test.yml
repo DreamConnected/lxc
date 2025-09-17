@@ -45,6 +45,7 @@ jobs:
             -Dopenssl=false \
             -Ddbus=false \
             -Dandroid-log=true \
+            -Dlandlock-monitor=true \
             --cross-file aarch64-android-api30.txt
 
         meson compile -C build

@@ -23,7 +23,7 @@ jobs:
         sudo apt-get install -y -qq build-essential pipx python3-venv pkg-config cmake docbook2x \
         python3-pip pipx jq
         sudo npm install -g conventional-changelog-cli
-        conventional-changelog -i CHANGELOG.md -s
+        conventional-changelog -o CHANGELOG.md -r 2
         pipx ensurepath
         pipx install meson==0.61
         pipx install ninja
@@ -74,6 +74,7 @@ jobs:
             -Dopenssl=true \
             -Ddbus=false \
             -Dandroid-log=true \
+            -Dlandlock-monitor=true \
             --cross-file aarch64-android-api30.txt
 
         meson compile -C build
