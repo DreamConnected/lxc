@@ -19,3 +19,5 @@ jobs:
           pr_title: "Merge upstream branch 'main'"
           pr_message: "Merge branch 'lxc:main' into main"
           auto_merge: false
+          merge_method: rebase
+          ignore_fail: true
