@@ -2,7 +2,7 @@ name: Sync Fork
 
 on:
   schedule:
-    - cron: '20 9 * * 1-5' # every  12:00
+    - cron: '20 4 * * 5' # every Friday 12:20 (UTC/GMT+08:00 Shanghai)
   workflow_dispatch: # on button click
 
 jobs:
