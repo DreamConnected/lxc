@@ -47,6 +47,8 @@ cmd_lxc_init_static_sources = files(
     '../string_utils.h') + include_sources
 
 cmd_lxc_monitord_sources = files('lxc_monitord.c')
+cmd_lxc_networkd_sources = files('lxc_networkd.c')
+cmd_lxc_aaudiod_sources = files('lxc_aaudiod.c')
 cmd_lxc_user_nic_sources = files('lxc_user_nic.c') + cmd_common_sources + netns_ifaddrs_sources
 cmd_lxc_usernsexec_sources = files('lxc_usernsexec.c') + cmd_common_sources + netns_ifaddrs_sources
 
@@ -108,3 +110,25 @@ cmd_programs += executable(
     include_directories: liblxc_includes,
     dependencies: liblxc_dep,
     install: true)
+
+if want_android_network
+    cmd_programs += executable(
+        'lxc-networkd',
+        cmd_lxc_networkd_sources,
+        include_directories: liblxc_includes,
+        dependencies: liblxc_dependencies,
+        link_whole: [liblxc_static],
+        install: true,
+        install_dir: lxclibexec)
+endif
+
+if want_android_audio
+    cmd_programs += executable(
+        'lxc-aaudiod',
+        cmd_lxc_aaudiod_sources,
+        include_directories: liblxc_includes,
+        dependencies: liblxc_dependencies,
+        link_whole: [liblxc_static],
+        install: true,
+        install_dir: lxclibexec)
+endif

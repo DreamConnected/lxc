@@ -58,6 +58,7 @@
 #include "syscall_wrappers.h"
 #include "terminal.h"
 #include "utils.h"
+#include "aaudio.h"
 
 #if HAVE_LIBCAP
 #include <sys/capability.h>
@@ -1193,6 +1194,15 @@ void lxc_end(struct lxc_handler *handler)
 		}
 	}
 
+	/* Only kill audio system if container is not rebooting */
+	if (handler->conf->reboot == REBOOT_NONE) {
+		ret = lxc_aaudio_kill(name);
+		if (ret < 0) 
+			WARN("Failed to stop container \"%s\" audio system", name);
+	} else {
+		INFO("Container is rebooting, skipping audio system kill");
+	}
+
 	/* Reset mask set by setup_signal_fd. */
 	ret = pthread_sigmask(SIG_SETMASK, &handler->oldmask, NULL);
 	if (ret < 0)
@@ -2250,6 +2260,17 @@ int __lxc_start(struct lxc_handler *handler, struct lxc_operations *ops,
 	handler->data = data;
 	handler->daemonize = daemonize;
 	cgroup_ops = handler->cgroup_ops;
+
+	/* Only setup audio system if container is not rebooting */
+	if (conf->reboot == REBOOT_NONE) {
+		ret = lxc_aaudio_setup(name, conf);
+		if (ret < 0) {
+			ERROR("Failed to setup container \"%s\" audio system", name);
+			goto out_abort;
+		}
+	} else {
+		INFO("Container is rebooting, skipping audio system setup");
+	}
 
 	if (!attach_block_device(handler->conf)) {
 		ERROR("Failed to attach block device");

@@ -1683,6 +1683,15 @@ static int netdev_configure_server_empty(struct lxc_handler *handler, struct lxc
 
 static int netdev_configure_server_none(struct lxc_handler *handler, struct lxc_netdev *netdev)
 {
+#if USE_ANDROID_NETWORK
+	/*
+	 * In this context, lxc-networkd ought to be utilized for configuring DNS for containers operating
+	 * in host network mode. Nevertheless, the behavior of each init system exhibits variability.
+	 * For instance, the default setting for systemd-resolved is 127.0.0.53#53. In light of this
+	 * uncertainty, I contend that employing lxc.net.[i].script.up for hooking represents the most
+	 * straightforward option, as it grants us the initiative.
+	 */
+#endif
 	netdev->ifindex = 0;
 	return 0;
 }

@@ -14,9 +14,11 @@ lxc_net = configure_file(
     install: true,
     install_dir: lxclibexec)
 
-lxc_net_builtin = configure_file(
-    configuration: conf,
-    input: 'lxc-net-builtin.in',
-    output: 'lxc-net-builtin',
-    install: true,
-    install_dir: lxclibexec)
+if want_android_network
+    lxc_net_android = configure_file(
+        configuration: conf,
+        input: 'lxc-net-android.in',
+        output: 'lxc-net-android',
+        install: true,
+        install_dir: lxclibexec)
+endif
