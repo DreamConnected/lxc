@@ -152,6 +152,8 @@ want_thread_safety = get_option('thread-safety')
 want_memfd_rexec = get_option('memfd-rexec')
 want_dbus = get_option('dbus')
 want_android_log = get_option('android-log')
+want_android_audio = get_option('android-audio')
+want_android_network = get_option('android-network')
 want_landlock_monitor = get_option('landlock-monitor')
 
 # Set sysconfdir
@@ -285,6 +287,30 @@ if want_android_log
         srcconf.set10('USE_ANDROID_LOG', liblog.found())
     else
         error('Android log system only support on Android platform')
+    endif
+endif
+
+## Android Network System.
+if want_android_network
+    if srcconf.get('IS_BIONIC') == 1
+        libandroid = cc.find_library('android', required: true)
+        pkgconfig_libs += libandroid
+        liblxc_dependencies += libandroid
+    else
+        error('Android network system only support on Android platform')
+    endif
+endif
+
+## Android Audio System.
+srcconf.set10('USE_ANDROID_AUDIO', false)
+if want_android_audio
+    if srcconf.get('IS_BIONIC') == 1
+        libaaudio = cc.find_library('aaudio', required: true)
+        pkgconfig_libs += libaaudio
+        liblxc_dependencies += libaaudio
+        srcconf.set10('USE_ANDROID_AUDIO', libaaudio.found())
+    else
+        error('Android audio system only support on Android platform')
     endif
 endif
 

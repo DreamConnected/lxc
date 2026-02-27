@@ -57,6 +57,8 @@ liblxc_sources = files(
     'storage/storage_utils.h',
     'storage/zfs.c',
     'storage/zfs.h',
+    'aaudio.c',
+    'aaudio.h',
     'af_unix.c',
     'af_unix.h',
     'api_extensions.h',

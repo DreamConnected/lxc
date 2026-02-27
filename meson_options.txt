@@ -78,6 +78,12 @@ option('tests', type: 'boolean', value: false,
 option('android-log', type: 'boolean', value: true,
        description: 'Use android log management')
 
+option('android-network', type: 'boolean', value: true,
+       description: 'Use android network system, for container DHCP and DNS')
+
+option('android-audio', type: 'boolean', value: false,
+       description: 'Use android audio system, for container PulseAudio/PipeWire')
+
 # Paths
 # was --apparmor-cache-dir in autotools
 option('apparmor-cache-path', type: 'string', value: 'cache/lxc/apparmor',
