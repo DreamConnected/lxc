@@ -170,10 +170,10 @@ BUSYBOX_PATHS=(
   "/data/adb/ap/bin/busybox"
 )
 
-if [ ! -f "@BINDIR/xz" ]; then
+if [ ! -f "@BINDIR@/xz" ]; then
     for xz in "${BUSYBOX_PATHS[@]}"; do
         if [ -f "${xz}" ]; then
-            ln -s "${xz}" "@BINDIR/xz"
+            ln -s "${xz}" "@BINDIR@/xz"
             break
         fi
     done
