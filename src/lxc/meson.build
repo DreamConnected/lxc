@@ -194,6 +194,10 @@ if want_seccomp and libseccomp.found()
     liblxc_sources += files('seccomp.c')
 endif
 
+if want_seccomp_minijail and libminijail.found()
+    liblxc_sources += files('seccomp_minijail.c')
+endif
+
 if want_selinux and libselinux.found()
     liblxc_sources += files('lsm/selinux.c')
 endif

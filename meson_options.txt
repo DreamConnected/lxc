@@ -84,6 +84,9 @@ option('android-network', type: 'boolean', value: true,
 option('android-audio', type: 'boolean', value: false,
        description: 'Use android audio system, for container PulseAudio/PipeWire')
 
+option('seccomp-minijail', type: 'boolean', value: false,
+       description: 'Using libminijail for seccomp filter instead of libseccomp')
+
 # Paths
 # was --apparmor-cache-dir in autotools
 option('apparmor-cache-path', type: 'string', value: 'cache/lxc/apparmor',

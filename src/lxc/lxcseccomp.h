@@ -17,6 +17,10 @@
 #include <sys/un.h>
 #endif
 
+#if HAVE_SECCOMP_MINIJAIL
+#include <libminijail/libminijail.h>
+#endif
+
 #include "compiler.h"
 #include "conf.h"
 #include "memory_utils.h"
@@ -29,7 +33,7 @@ struct lxc_handler;
 #define SECCOMP_FILTER_FLAG_NEW_LISTENER (1UL << 3)
 #endif
 
-#if HAVE_SECCOMP
+#if HAVE_SECCOMP || HAVE_SECCOMP_MINIJAIL
 
 
 #if HAVE_DECL_SECCOMP_NOTIFY_FD
@@ -74,6 +78,10 @@ struct lxc_seccomp {
 #if HAVE_DECL_SECCOMP_NOTIFY_FD
 	struct seccomp_notify notifier;
 #endif /* HAVE_DECL_SECCOMP_NOTIFY_FD */
+
+#if HAVE_SECCOMP_MINIJAIL
+	struct minijail *minijail;
+#endif /* HAVE_SECCOMP_MINIJAIL */
 };
 
 __hidden extern int lxc_seccomp_load(struct lxc_conf *conf);
