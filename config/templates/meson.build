@@ -1,11 +1,22 @@
 # SPDX-License-Identifier: LGPL-2.1+
 
+if not want_seccomp_minijail
 lxc_conf_common_seccomp = configure_file(
     configuration: conf,
     input: 'common.seccomp',
     output: 'common.seccomp',
     install: true,
     install_dir: lxctemplateconfdir)
+endif
+
+if want_seccomp_minijail
+lxc_conf_common_seccomp_minijail = configure_file(
+    configuration: conf,
+    input: 'common.minijail.seccomp',
+    output: 'common.seccomp',
+    install: true,
+    install_dir: lxctemplateconfdir)
+endif
 
 lxc_conf_common_main = configure_file(
     configuration: conf,

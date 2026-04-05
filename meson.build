@@ -146,6 +146,7 @@ want_openssl = get_option('openssl')
 want_selinux = get_option('selinux')
 want_oss_fuzz = get_option('oss-fuzz')
 want_seccomp = get_option('seccomp')
+want_seccomp_minijail = get_option('seccomp-minijail')
 want_spec = get_option('specfile')
 want_state_dirs = get_option('install-state-dirs')
 want_thread_safety = get_option('thread-safety')
@@ -399,8 +400,12 @@ endif
 threads = dependency('threads')
 liblxc_dependencies += threads
 
+if want_seccomp and want_seccomp_minijail
+    error('Cannot enable both seccomp and seccomp_minijail')
+endif
+
 ## Seccomp.
-if want_seccomp
+if want_seccomp and not want_seccomp_minijail
     libseccomp = dependency('libseccomp', required: false)
     srcconf.set10('HAVE_SECCOMP', libseccomp.found())
     pkgconfig_libs += libseccomp
@@ -440,6 +445,16 @@ if want_seccomp
     endif
 else
     srcconf.set10('HAVE_SECCOMP', false)
+endif
+
+## Seccomp-minijail.
+if want_seccomp_minijail and not want_seccomp
+    libminijail = dependency('libminijail', required: false)
+    srcconf.set10('HAVE_SECCOMP_MINIJAIL', libminijail.found())
+    pkgconfig_libs += libminijail
+    liblxc_dependencies += libminijail
+else
+    srcconf.set10('HAVE_SECCOMP_MINIJAIL', false)
 endif
 
 ## SELinux.

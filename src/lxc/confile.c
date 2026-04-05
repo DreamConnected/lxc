@@ -1246,7 +1246,7 @@ static int set_config_seccomp_notify_proxy(const char *key, const char *value,
 static int set_config_seccomp_profile(const char *key, const char *value,
 				      struct lxc_conf *lxc_conf, void *data)
 {
-#if HAVE_SECCOMP
+#if HAVE_SECCOMP || HAVE_SECCOMP_MINIJAIL
 	return set_config_path_item(&lxc_conf->seccomp.seccomp, value);
 #else
 	return ret_errno(ENOSYS);
